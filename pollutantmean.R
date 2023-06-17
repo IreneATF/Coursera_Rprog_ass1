@@ -8,8 +8,9 @@ cat("PART 1\n\n")
 
 pollutantmean <- function(directory,pollutant,id = 1:332) {
   
-  setwd("C:/Users/irene/Documents/Lifelong learning/Learning R/R Learning Coursera/Coursera_Rprog_ass1") ## setting directory to location specdata folder  
-
+   ## setting directory to location specdata folder  
+  setwd("C:/Users/irene/Documents/Lifelong learning/Learning R/R Learning Coursera/Coursera_Rprog_ass1")
+  
   print(R.version.string)
   
   setwd(file.path(getwd(),directory)) ## Setting working directory
@@ -18,26 +19,28 @@ pollutantmean <- function(directory,pollutant,id = 1:332) {
   
   for (x in id) {                                           ## Reading selected group of monitor id 
     
-    if (x < 10) {x <- sub('^(.{0})(.?)$', '\\100\\2', x)  ## Adding zeros to match ID file name
-    x
-    } else if (x < 100) {x <- sub('^(.{0})(.?)$', '\\10\\2', x)
-    x
-    } else { x <- as.character(x)
-    x}
+    if (x < 10) {x <- paste0("00",x)  ## Adding zeros to match ID file name
+    } else if (x < 100) {
+      x <- paste0("0",x)
+    } else {x <- x}
     
+    x <- as.character(x)
     x_c <- c(x,".csv")
     file <- str_flatten(x_c)
     data <- read.csv(file)          ## Read table from one ID
-    pollutant_v <- c(data$pollutant)                      ## Creating numerical vector from values of the right pollutant
+    
+    if (pollutant == "nitrate") {pollutant_v <- c(data$nitrate)         ## Creating numerical vector from values of the right pollutant
+    } else if (pollutant == "sulfate") {pollutant_v <- c(data$sulfate)}
+                          
     bad <- is.na(pollutant_v) 
     pollutant_clean <- c(pollutant_v[!bad])               ## Removing NA values
     pollutant_full<- c(pollutant_full, pollutant_clean)   ## Creating vector with cumulated pollutant values from all IDs
   }
-    
     result <- mean(pollutant_full)                        ## Taking mean for all IDs
     result
 }
   
+setwd("C:/Users/irene/Documents/Lifelong learning/Learning R/R Learning Coursera/Coursera_Rprog_ass1")
 source("pollutantmean.R")
 
 ## Expected output test
@@ -55,10 +58,35 @@ cat("PART 2\n\n")
 
 complete <- function(directory, id = 1:332) {
   
+  ## setting directory to location specdata folder  
+  setwd("C:/Users/irene/Documents/Lifelong learning/Learning R/R Learning Coursera/Coursera_Rprog_ass1")
+  
   print(R.version.string)
   
-  setwd(file.path(getwd(),directory))
+  setwd(file.path(getwd(),directory)) ## Setting working directory
+  
+  for (x in id) {                                           ## Reading selected group of monitor id 
+    
+    if (x < 10) {x <- paste0("00",x)  ## Adding zeros to match ID file name
+    } else if (x < 100) {
+      x <- paste0("0",x)
+    } else {x <- x}
+    
+    x <- as.character(x)
+    x_c <- c(x,".csv")
+    file <- str_flatten(x_c)
+    data <- read.csv(file)          ## Read table from one ID
+  
+    nobs <- 0
+    pollutant_v <- matrix(c(data$nitrate,data$sulfate), nrows = 250, ncol = 2)
+    bad <- is.na(pollutant_v) 
+    pollutant_clean <- c(pollutant_v[!bad])
+
+  }  
+  
+  result <- data.frame(id,nobs)
 }
+
 source("complete.R")
 complete("specdata", 1)
   # Answer:   id  nobs
