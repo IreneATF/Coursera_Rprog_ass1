@@ -10,7 +10,7 @@ corr <- function(directory, threshold = 0) {
   ## setting directory to location specdata folder  
   setwd("C:/Users/irene/Documents/Lifelong learning/Learning R/R Learning Coursera/Coursera_Rprog_ass1")
   
-  print(R.version.string)
+  ## print(R.version.string)
   
   setwd(file.path(getwd(),directory)) ## Setting working directory
   
@@ -24,8 +24,7 @@ corr <- function(directory, threshold = 0) {
   nobs_v <- c(complete_df$nobs)
   l <- length(nobs_v)
   
-  nitrate_vth <- c()
-  sulfate_vth <- c()
+  corr_full_v <- c()
   
   for (x in 1:l) {
     if (nobs_v[[x]] > threshold) {
@@ -42,23 +41,28 @@ corr <- function(directory, threshold = 0) {
       data <- read.csv(file)
       
       rows <- nrow(data)
-      ## pollutant_m <- matrix(c(data$sulfate,data$nitrate), nrow = rows, ncol = 2)
-      ## bad <- is.na(pollutant_m)
       
+      nitrate_vcomp <- c()
+      sulfate_vcomp <- c()
       sulfate_v <- c(data$sulfate)
       nitrate_v <- c(data$nitrate)
       
       for (y in 1:rows) {
         if (is.na(sulfate_v[[y]]) == FALSE & is.na(nitrate_v[[y]]) == FALSE) {
-          sulfate_vth <- c(sulfate_vth,sulfate_v[[y]])
-          nitrate_vth <- c(nitrate_vth,nitrate_v[[y]])
+          sulfate_vcomp <- c(sulfate_vcomp,sulfate_v[[y]])
+          nitrate_vcomp <- c(nitrate_vcomp,nitrate_v[[y]])
         }
       }
+      corr_id <- cor(x = sulfate_vcomp,y = nitrate_vcomp)
+      corr_full_v <- c(corr_full_v,corr_id)
     }
-  
-  result <- cor(x = sulfate_vth,y = nitrate_vth)
-  result
   }
+  
+  if (is.null(corr_full_v) == TRUE) {result <- c()}
+  
+  result <- corr_full_v
+  result
+  
   
 }
 
@@ -66,6 +70,7 @@ setwd("C:/Users/irene/Documents/Lifelong learning/Learning R/R Learning Coursera
 
 source("corr.R")
 source("complete.R")
+
 cr <- corr("specdata", 150)
 head(cr)
 ## Answer: 
@@ -105,3 +110,4 @@ summary(cr)
 length(cr)
 ## Answer:
 ## [1] 323
+
