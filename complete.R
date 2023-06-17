@@ -1,8 +1,8 @@
-cat("\014") # Clearing console
+cat("\014") ## Clearing console
 
   #### PART 2 ####
 
-# cat("PART 2\n\n")
+## cat("PART 2\n\n")
 
 complete <- function(directory, id = 1:332) {
   
@@ -10,7 +10,7 @@ complete <- function(directory, id = 1:332) {
   ## setting directory to location specdata folder  
   setwd("C:/Users/irene/Documents/Lifelong learning/Learning R/R Learning Coursera/Coursera_Rprog_ass1")
   
-  print(R.version.string)
+  ## print(R.version.string)
   
   setwd(file.path(getwd(),directory)) ## Setting working directory
   
@@ -48,8 +48,8 @@ complete <- function(directory, id = 1:332) {
 setwd("C:/Users/irene/Documents/Lifelong learning/Learning R/R Learning Coursera/Coursera_Rprog_ass1")
 source("complete.R")
 complete("specdata", 1)
-# Answer:   id  nobs
-# 1  1   117
+## Answer:   id  nobs
+##         1  1   117
 
 complete("specdata", c(2,4,8,10,12))
 ## Answer: 
